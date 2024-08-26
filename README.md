@@ -1,6 +1,6 @@
 # Learnify
 
-This is a FastAPI-based project with PostgreSQL as the database and SQLAlchemy as the ORM. This README provides comprehensive instructions on setting up, running, and contributing to the project.
+This is a Learnify backend API, a FastAPI-based project with PostgreSQL as the database and SQLAlchemy as the ORM. This README provides comprehensive instructions on setting up, running, and contributing to the project.
 
 ## Prerequisites
 
@@ -85,10 +85,10 @@ Alembic is used for managing database migrations. To set up Alembic and run migr
 Run the FastAPI application with Uvicorn:
 
 ```bash
-uvicorn main:app --reload
+python3 main.py
 ```
 
-The app should now be running at `http://localhost:8000`.
+The app should now be running at `http://localhost:5000`.
 
 ## Contributing
 
@@ -97,8 +97,9 @@ The app should now be running at `http://localhost:8000`.
 To contribute to this project, start by creating a new branch:
 
 ```bash
-git checkout -b feature/your-feature-name
+git checkout -b feat/your-feature-name
 ```
+Pay attention to the banch naming convention
 
 ### 2. Making Changes
 
@@ -113,12 +114,12 @@ Before submitting your changes, test them locally to ensure everything works as 
 Push your branch to the remote repository:
 
 ```bash
-git push origin feature/your-feature-name
+git push origin feat/your-feature-name
 ```
 
 ### 5. Creating a Pull Request
 
-Once your changes are pushed, create a pull request (PR) to the `main` branch. Include a detailed description of the changes you made.
+Once your changes are pushed, create a pull request (PR) to the `dev` branch. Include a detailed description of the changes you made.
 
 ### 6. Code Review
 
@@ -126,7 +127,7 @@ Your PR will be reviewed by the maintainers. Please address any feedback promptl
 
 ### 7. Merging
 
-After approval, your PR will be merged into the `main` branch.
+After approval, your PR will be merged into the `dev` branch.
 
 ## Writing Clean Code
 
@@ -142,6 +143,12 @@ To update the dependencies, modify the `requirements.txt` file, then run:
 
 ```bash
 pip install -r requirements.txt
+```
+
+Altenatively, you can update requirements.txt when u `pip install` a new package by running:
+
+```bash
+pip freeze > -r requirements.txt
 ```
 
 ## License
