@@ -5,7 +5,10 @@ from fastapi import HTTPException, Request, FastAPI, status
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from api.v1.routes.user import user_router
-
+from api.utils.error_handlers import (integrity_error_handler, general_exception_handler, http_exception_handler, validation_exception_handler)
+from fastapi.exceptions import RequestValidationError
+from sqlalchemy.exc import IntegrityError
+from api.v1.routes import api_version_one
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -37,8 +40,15 @@ app.add_middleware(
 async def get_root() -> dict:
     return {"message": "I am the Learnify API, the backend API for the Learnify web application."}
 
-app.include_router(user_router, prefix="/api/v1")
+# Register routers
+app.include_router(api_version_one)
 
+
+# Register exception handlers
+app.add_exception_handler(HTTPException, http_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(IntegrityError, integrity_error_handler)
+app.add_exception_handler(Exception, general_exception_handler)
 
 
 
