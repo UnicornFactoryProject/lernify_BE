@@ -63,28 +63,35 @@ class CreateUserSchema(BaseModel):
         if not any(char in special_chars for char in password):
             raise ValueError("password must include at least one special character")
         return values
-    
-    
 
-    # @model_validator(mode='before')
-    # @classmethod
-    # def validate_email(cls, values: Dict[str, str]) -> Dict[str, str]:
-    #     """validates email
-    #     """
-    #     email = values.get('email')
-    #     try:
-    #         email = validate_email(email, check_deliverability=True)
-    #         if email.domain.count(".com") > 1:
-    #             raise EmailNotValidError("Email address contains multiple '.com' endings.")
-    #         if not is_valid_mx_record(email.domain):
-    #             raise ValueError('Email is invalid')
-    #     except EmailNotValidError as exc:
-    #         raise ValueError(exc) from exc
-    #     except Exception as exc:
-    #         raise ValueError(exc) from exc
+    @model_validator(mode='before')
+    @classmethod
+    def validate_email(cls, values: Dict[str, str]) -> Dict[str, str]:
+        """validates email
+        """
+        email = values.get('email')
+        try:
+            email = validate_email(email, check_deliverability=True)
+            if email.domain.count(".com") > 1:
+                raise EmailNotValidError("Email address contains multiple '.com' endings.")
+            if not is_valid_mx_record(email.domain):
+                raise ValueError('Email is invalid')
+        except EmailNotValidError as exc:
+            raise ValueError(exc) from exc
+        except Exception as exc:
+            raise ValueError(exc) from exc
         
-    #     return values
+        return values
 
         
-    
+class LoginUserSchema(BaseModel):
+    """Schema to create a user"""
 
+    email: EmailStr
+    password: Annotated[
+        str, StringConstraints(
+            min_length=8,
+            max_length=64,
+            strip_whitespace=True
+        )
+    ]
