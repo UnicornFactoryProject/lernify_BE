@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from api.v1.models.user import User
 from api.db.database import get_db
 from api.v1.services.user import UserService
-from api.v1.schemas.user import CreateUserSchema, LoginUserSchema, ForgotPasswordSchema, PasswordResetSchema
+from api.v1.schemas.user import CreateUserSchema, GoogleTokenSchema, LoginUserSchema, ForgotPasswordSchema, PasswordResetSchema
 from fastapi.encoders import jsonable_encoder
 from api.utils.json_response import auth_response
 from api.utils.auth_utils import generate_access_token
@@ -43,6 +43,36 @@ async def reister_user(background_task: BackgroundTasks, request: Request, respo
         }
     )
 
+@auth_router.post('/google', status_code=status.HTTP_200_OK)
+async def google_auth(request: Request, response: Response, background_task: BackgroundTasks, schema: GoogleTokenSchema, db: Session = Depends(get_db)):
+    user_service = UserService(db)
+
+    user = user_service.google_signin(db, schema.id_token)
+
+    ## Generate token
+    token = generate_access_token(user.id)
+
+    # # Background task to send email
+    # background_task.add_task(
+    #     send_email,
+    #     subject="Welcome to Learnify e-Learning",
+    #     recipients=[user.email],
+    #     template_name="welcome_template.html",
+    #     context={"first_name": user.first_name.capitalize()},
+    # )
+
+    return auth_response(
+        status_code=200,
+        message='Login successful',
+        access_token=token,
+        data={
+            'user': jsonable_encoder(
+                user,
+                exclude=['password', 'is_deleted', 'is_verified']
+            ),
+        }
+    )
+
 @auth_router.post('/login', status_code=status.HTTP_200_OK)
 async def login_user(request: Request, response: Response, login_schema: LoginUserSchema, db: Session = Depends(get_db)):
     user_service = UserService(db)
@@ -71,14 +101,14 @@ async def forgot_password(request: Request, response: Response, background_task:
 
     reset_link = f"{config.FRONTEND_BASE_URL}/reset-password?token={user.password_reset_token}"
 
-    # # Background task to send email
-    # background_task.add_task(
-    #     send_email,
-    #     subject="Welcome to Learnify e-Learning",
-    #     recipients=[user.email],
-    #     template_name="password_reset_template.html",
-    #     context={"reset_link": reset_link, "first_name": user.first_name.capitalize()},
-    # )
+    # Background task to send email
+    background_task.add_task(
+        send_email,
+        subject="Welcome to Learnify e-Learning",
+        recipients=[user.email],
+        template_name="password_reset_template.html",
+        context={"reset_link": reset_link, "first_name": user.first_name.capitalize()},
+    )
 
     return JSONResponse(
         status_code=200,

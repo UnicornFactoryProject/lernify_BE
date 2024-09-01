@@ -29,6 +29,10 @@ class Config():
     MAIL_FROM_NAME: str = config("MAIL_FROM_NAME")
     MAIL_FROM: str = config("MAIL_FROM")
 
+    # Google OAuth configurations
+    GOOGLE_CLIENT_ID: str = config("GOOGLE_CLIENT_ID")
+    GOOGLE_CLIENT_SECRET: str = config("GOOGLE_CLIENT_SECRET")
+
     # Others
     FRONTEND_BASE_URL: str = config("FRONTEND_BASE_URL")
 

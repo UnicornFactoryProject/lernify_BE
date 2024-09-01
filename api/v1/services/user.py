@@ -4,7 +4,7 @@ from api.v1.models import User
 from typing import List
 from api.db.database import get_db
 from fastapi import HTTPException
-from api.utils.auth_utils import hash_password, verify_password
+from api.utils.auth_utils import hash_password, verify_google_token, verify_password
 from api.v1.schemas import user
 import secrets
 
@@ -34,7 +34,34 @@ class UserService():
         db.refresh(new_user)
         return new_user
     
-    def login_user(self, db: Session, email: str, password: str):
+    def google_signin(self, db: Session, id_token: str) -> User:
+        """Google sign in
+        """
+        user_info = verify_google_token(id_token)
+        if not user_info:
+            raise HTTPException(status_code=400, detail="Invalid google token")
+        
+        user = db.query(User).filter(User.email == user_info.get('email')).first()
+
+        if user:
+            if user.google_id is None:
+                raise HTTPException(status_code=400, detail="Local sign-up users cannot sign in with Google")
+
+        if not user:
+            user = User(
+                email=user_info.get('email'),
+                first_name=user_info.get('given_name'),
+                last_name=user_info.get('family_name'),
+                avatar_url=user_info.get('picture'),
+                google_id=user_info.get('sub'),
+                is_verified=True,
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        return user
+    
+    def login_user(self, db: Session, email: str, password: str) -> User:
         """ Login a user
         """
 
@@ -48,7 +75,7 @@ class UserService():
 
         return user
     
-    def password_reset_request(self, db: Session, email: str):
+    def password_reset_request(self, db: Session, email: str) -> User:
         """Password reset request
         """
         user = db.query(User).filter(User.email == email).first()
@@ -63,7 +90,7 @@ class UserService():
         db.commit()
         return user
     
-    def reset_password(self, db: Session, schema = user.PasswordResetSchema):
+    def reset_password(self, db: Session, schema = user.PasswordResetSchema) -> User:
         """ Validate password reset token and reset password
         """
         user = db.query(User).filter(User.password_reset_token == schema.token).first()
@@ -79,3 +106,4 @@ class UserService():
         user.password_reset_token_expiry = None
         db.commit()
         return user
+    

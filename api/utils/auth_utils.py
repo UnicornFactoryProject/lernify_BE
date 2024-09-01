@@ -3,6 +3,8 @@ import datetime
 from api.configs.config import config
 from jose import jwt, JWTError
 from fastapi import HTTPException
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 # Initialize the CryptContext with your hashing algorithm
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -39,4 +41,12 @@ def verify_access_token(token: str):
         raise HTTPException(status_code=401, detail="Unauthorized")
     return user_id
 
-
+def verify_google_token(token: str):
+    """ Verify google id token
+    """
+    try:
+        id_info = id_token.verify_oauth2_token(token, requests.Request(), config.GOOGLE_CLIENT_ID)
+        return id_info   
+    except Exception:
+        return None
+    return id_info
