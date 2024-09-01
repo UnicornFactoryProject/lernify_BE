@@ -1,6 +1,6 @@
 from passlib.context import CryptContext
 import datetime
-from api.utils.config import config
+from api.configs.config import config
 from jose import jwt, JWTError
 from fastapi import HTTPException
 

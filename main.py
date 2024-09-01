@@ -1,5 +1,6 @@
 """ App entry point.
 """
+from fastapi.templating import Jinja2Templates
 import uvicorn
 from fastapi import HTTPException, Request, FastAPI, status
 from contextlib import asynccontextmanager
@@ -23,6 +24,10 @@ app = FastAPI(
     description="Learnify API, the backend API for the Learnify web application",
     version="1.0.0",
 )
+
+# Set up email templates and css static files
+email_templates = Jinja2Templates(directory='api/templates/email_templates')
+
 
 origins = [
     "http://localhost:3000",
@@ -53,4 +58,4 @@ app.add_exception_handler(Exception, general_exception_handler)
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=5000, reload=True)
+    uvicorn.run("main:app", port=8000, reload=True)
