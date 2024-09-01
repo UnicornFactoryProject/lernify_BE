@@ -58,4 +58,4 @@ app.add_exception_handler(Exception, general_exception_handler)
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000, reload=True)
+    uvicorn.run("main:app", port=5000, reload=True)

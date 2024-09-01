@@ -95,3 +95,31 @@ class LoginUserSchema(BaseModel):
             strip_whitespace=True
         )
     ]
+
+class ForgotPasswordSchema(BaseModel):
+    """Forgot password schema
+    """
+    email: EmailStr
+
+class PasswordResetSchema(BaseModel):
+    token: str
+    new_password: str
+
+    @model_validator(mode='before')
+    @classmethod
+    def validate_password(cls, values: Dict[str, str]) -> Dict[str, str]:
+        """ Validates password
+        """
+        password = values.get('new_password')
+        special_chars = "!@#$%^&*()-+"
+
+        # password requirement checks
+        if not any(char.islower() for char in password):
+            raise ValueError("password must include at least one lowercase character")
+        if not any(char.isupper() for char in password):
+            raise ValueError("password must include at least one uppercase character")
+        if not any(char.isdigit() for char in password):
+            raise ValueError("password must include at least one digit")
+        if not any(char in special_chars for char in password):
+            raise ValueError("password must include at least one special character")
+        return values

@@ -29,5 +29,8 @@ class Config():
     MAIL_FROM_NAME: str = config("MAIL_FROM_NAME")
     MAIL_FROM: str = config("MAIL_FROM")
 
+    # Others
+    FRONTEND_BASE_URL: str = config("FRONTEND_BASE_URL")
+
 
 config = Config()

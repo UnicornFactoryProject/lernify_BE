@@ -1,13 +1,15 @@
 from fastapi import Depends, APIRouter, Request, status, Response, BackgroundTasks
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from api.v1.models.user import User
 from api.db.database import get_db
 from api.v1.services.user import UserService
-from api.v1.schemas.user import CreateUserSchema, LoginUserSchema
+from api.v1.schemas.user import CreateUserSchema, LoginUserSchema, ForgotPasswordSchema, PasswordResetSchema
 from fastapi.encoders import jsonable_encoder
 from api.utils.json_response import auth_response
 from api.utils.auth_utils import generate_access_token
 from api.utils.email_utils import send_email
+from api.configs.config import config
 
 
 auth_router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -58,5 +60,43 @@ async def login_user(request: Request, response: Response, login_schema: LoginUs
                 user,
                 exclude=['password', 'is_deleted', 'is_verified']
             ),
+        }
+    )
+
+
+@auth_router.post('/forgot-password', status_code=status.HTTP_200_OK)
+async def forgot_password(request: Request, response: Response, background_task: BackgroundTasks, schema: ForgotPasswordSchema, db: Session = Depends(get_db)):
+    user_service = UserService(db)
+    user = user_service.password_reset_request(db, schema.email)
+
+    reset_link = f"{config.FRONTEND_BASE_URL}/reset-password?token={user.password_reset_token}"
+
+    # # Background task to send email
+    # background_task.add_task(
+    #     send_email,
+    #     subject="Welcome to Learnify e-Learning",
+    #     recipients=[user.email],
+    #     template_name="password_reset_template.html",
+    #     context={"reset_link": reset_link, "first_name": user.first_name.capitalize()},
+    # )
+
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": 200,
+            "message": "Password reset link sent to your email",
+        }
+    )
+
+@auth_router.post('/reset-password', status_code=status.HTTP_200_OK)
+async def reset_password(request: Request, response: Response, schema: PasswordResetSchema, db: Session = Depends(get_db)):
+    user_service = UserService(db)
+    user = user_service.reset_password(db, schema)
+
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": 200,
+            "message": "Password reset successful",
         }
     )
