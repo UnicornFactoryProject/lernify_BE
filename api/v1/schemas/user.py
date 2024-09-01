@@ -123,3 +123,7 @@ class PasswordResetSchema(BaseModel):
         if not any(char in special_chars for char in password):
             raise ValueError("password must include at least one special character")
         return values
+    
+class GoogleTokenSchema(BaseModel):
+    id_token: str
+
