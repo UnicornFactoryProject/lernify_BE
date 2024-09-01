@@ -14,5 +14,7 @@ class User(BaseTableModel):
     last_name = Column(String, nullable=True)
     password = Column(String, nullable=True)
     avatar_url = Column(String, nullable=True)
+    password_reset_token = Column(String, nullable=True)
+    password_reset_token_expiry = Column(String, nullable=True)
     is_deleted = Column(Boolean, server_default=text("false"))
     is_verified = Column(Boolean, server_default=text("false"))

@@ -4,7 +4,7 @@
 """
 from sqlalchemy.orm import sessionmaker, scoped_session, declarative_base
 from sqlalchemy import create_engine
-from api.utils.config import config, BASE_DIR
+from api.configs.config import config, BASE_DIR
 
 Base = declarative_base()
 

@@ -7,3 +7,6 @@ DB_PASSWORD=
 DB_NAME=
 DB_TYPE="postgresql" or "sqlite"
 DB_URL=
+ACCESS_TOKEN_EXPIRY="3d"
+ACCESS_TOKEN_SECRET="token secret"
+ALGORITHM = HS256
