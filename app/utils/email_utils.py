@@ -1,5 +1,4 @@
 from fastapi_mail import FastMail, MessageSchema, MessageType
-from api.configs.email_config import conf
 from typing import Optional
 
 async def send_email(subject: str, recipients: list[str], template_name: str,  context: Optional[dict] = None):

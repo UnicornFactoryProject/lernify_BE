@@ -1,5 +1,4 @@
 from fastapi_mail import ConnectionConfig
-from api.configs.config import config
 
 
 conf = ConnectionConfig(
