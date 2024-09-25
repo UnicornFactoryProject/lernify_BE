@@ -1,13 +1,15 @@
 """ User data model
 """
 
-from sqlalchemy import Column, String, text, Boolean
+from sqlalchemy import Column, String, text, Boolean, Integer
 from sqlalchemy.orm import relationship
-from api.v1.models.base_model import BaseTableModel
+from app.db.database import Base
 
 
-class User(BaseTableModel):
+class ExamUser(Base):
     __tablename__ = "users"
+    
+    id = Column(Integer, primary_key=True)
 
     email = Column(String, unique=True, nullable=False)
     first_name = Column(String, nullable=False)
