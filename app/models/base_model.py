@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """ This is the Base Model Class
 """
 from fastapi import Depends
-from api.db.database import Base
+from app.db.database import Base
 import uuid
 from sqlalchemy import (
     Column,
