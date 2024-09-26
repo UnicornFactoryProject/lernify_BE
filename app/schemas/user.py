@@ -4,6 +4,8 @@ from typing import Annotated, Dict
 import dns.resolver
 
 
+
+
 def is_valid_mx_record(domain: str):
     """ checks if the domain has a valid MX record
     """
