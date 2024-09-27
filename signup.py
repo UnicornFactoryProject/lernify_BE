@@ -4,21 +4,12 @@ from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from passlib.context import CryptContext
-import os
-
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
-
-# Database URL
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:admin@localhost:5432/LearnifyDB"
 
 # Initialize FastAPI app
 app = FastAPI()
+
+# Database URL
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:admin@localhost:5432/LearnifyDB"
 
 # SQLAlchemy setup
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -29,7 +20,8 @@ Base = declarative_base()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Password hashing function
-def hash_password(password: str):
+def hash_password(password: str) -> str:
+    """Hash a password using bcrypt."""
     return pwd_context.hash(password)
 
 # Database model for User
@@ -46,6 +38,7 @@ Base.metadata.create_all(bind=engine)
 
 # Dependency to get DB session
 def get_db():
+    """Get a database session."""
     db = SessionLocal()
     try:
         yield db
@@ -61,6 +54,8 @@ class UserSignUp(BaseModel):
 # Sign-up route
 @app.post("/signup/")
 def sign_up(user: UserSignUp, db: Session = Depends(get_db)):
+    """Sign up a new user."""
+    
     # Check if user already exists
     user_exists = db.query(User).filter(User.email == user.email).first()
     if user_exists:
@@ -81,4 +76,4 @@ def sign_up(user: UserSignUp, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     
-    return {"message": "Successfully created uLearnux account", "user": new_user}
+    return {"message": "Successfully created Learnify account", "user": {"id": new_user.id, "full_name": new_user.full_name, "email": new_user.email}}
