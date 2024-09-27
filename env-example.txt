@@ -1,13 +1,15 @@
 ## Add any new environment variables here so that other developers are aware of them
 
-DB_PORT=
-DB_USER=
-DB_PASSWORD=
-DB_NAME=
-DB_URL=
-ACCESS_TOKEN_EXPIRY="3d"
-ACCESS_TOKEN_SECRET="token secret"
-ACCESS_TOKEN_ALGORITHM = HS256
+DB_HOST =
+DB_PORT =
+DB_USER =
+DB_PASSWORD =
+DB_NAME =
+
+ACCESS_TOKEN_EXPIRY = 60
+SECRET_KEY = "token secret"
+ALGORITHM = "HS256"
+
 MAIL_USERNAME=
 MAIL_PASSWORD=
 MAIL_SERVER="smtp.gmail.com"
