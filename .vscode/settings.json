@@ -2,7 +2,10 @@
     "cSpell.words": [
         "autoflush",
         "dotenv",
+        "fastapi",
+        "passlib",
         "sessionmaker",
-        "sqlalchemy"
+        "sqlalchemy",
+        "tokenurl"
     ]
 }
