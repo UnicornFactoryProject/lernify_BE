@@ -10,10 +10,14 @@ ACCESS_TOKEN_EXPIRY = 60
 SECRET_KEY = "token secret"
 ALGORITHM = "HS256"
 
-MAIL_USERNAME=
-MAIL_PASSWORD=
-MAIL_SERVER="smtp.gmail.com"
-MAIL_FROM_NAME="Learnify"
-MAIL_FROM=
+MAIL_USERNAME =        # Your Gmail address
+MAIL_PASSWORD =        # App-specific password if you have 2FA enabled
+MAIL_SERVER = "smtp.gmail.com"
+MAIL_FROM_NAME = "Learnify" # Your desired "From" name
+MAIL_FROM =            # Your Gmail address again, used as the sender address
+MAIL_PORT=587          # SMTP port for TLS
+MAIL_TLS=True          # Use TLS for secure connection
+MAIL_SSL=False         # Gmail uses TLS, so SSL should be False
+
 FRONTEND_BASE_URL="http://localhost:3000"
 GOOGLE_CLIENT_ID=

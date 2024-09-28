@@ -4,8 +4,10 @@
         "dotenv",
         "fastapi",
         "passlib",
+        "premailer",
         "sessionmaker",
         "sqlalchemy",
+        "templating",
         "tokenurl"
     ]
 }
