@@ -25,11 +25,11 @@ app = FastAPI(
 )
 
 # Set up email templates and css static files
-email_templates = Jinja2Templates(directory='app/templates/email_templates')
+email_templates = Jinja2Templates(directory='app/templates')
 
 
 origins = [
-    "http://localhost:3000",
+    "http://localhost:3000"
 ]
 
 app.add_middleware(

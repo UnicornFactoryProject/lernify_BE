@@ -1,0 +1,15 @@
+{
+    "cSpell.words": [
+        "autoflush",
+        "dotenv",
+        "fastapi",
+        "jsonable",
+        "Learnify",
+        "passlib",
+        "premailer",
+        "sessionmaker",
+        "sqlalchemy",
+        "templating",
+        "tokenurl"
+    ]
+}
