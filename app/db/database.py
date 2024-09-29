@@ -15,12 +15,7 @@ DB_NAME = config.DB_NAME
 
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-engine = create_engine(DATABASE_URL, 
-                       pool_size=10, # max connections in the pool
-                       max_overflow=20, # extra connections if the pool is full
-                       pool_timeout=30, # timeout to acquire connection from pool
-                       pool_recycle=1800 # seconds to recycle the connection
-)
+engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
