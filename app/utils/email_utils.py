@@ -1,17 +1,17 @@
 from fastapi_mail import FastMail, MessageSchema, MessageType, ConnectionConfig
 from typing import Optional
 from premailer import transform
-from app.configs import config
+from app.configs import email_config
 
 conf = ConnectionConfig(
-    MAIL_USERNAME = config.MAIL_USERNAME,
-    MAIL_PASSWORD = config.MAIL_PASSWORD,
-    MAIL_FROM = config.MAIL_FROM,
-    MAIL_FROM_NAME = config.MAIL_FROM_NAME,
-    MAIL_SERVER = config.MAIL_SERVER,
-    MAIL_PORT = config.MAIL_PORT,
-    MAIL_TLS = config.MAIL_TLS,
-    MAIL_SSL = config.MAIL_SSL,
+    MAIL_USERNAME = email_config.MAIL_USERNAME,
+    MAIL_PASSWORD = email_config.MAIL_PASSWORD,
+    MAIL_FROM = email_config.MAIL_FROM,
+    MAIL_FROM_NAME = email_config.MAIL_FROM_NAME,
+    MAIL_SERVER = email_config.MAIL_SERVER,
+    MAIL_PORT = email_config.MAIL_PORT,
+    MAIL_STARTTLS = email_config.MAIL_STARTTLS,
+    MAIL_SSL_TLS = email_config.MAIL_SSL_TLS,
     USE_CREDENTIALS=True,
     VALIDATE_CERTS=True
 )

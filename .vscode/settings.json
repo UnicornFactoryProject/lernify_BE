@@ -3,6 +3,8 @@
         "autoflush",
         "dotenv",
         "fastapi",
+        "jsonable",
+        "Learnify",
         "passlib",
         "premailer",
         "sessionmaker",

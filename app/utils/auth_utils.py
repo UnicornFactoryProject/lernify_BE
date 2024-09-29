@@ -34,7 +34,7 @@ def generate_access_token(data:dict) -> str:
 
 
 
-def verify_access_token(token:Annotated[str, Depends(oauth2_scheme)], session=Depends(get_db)):
+def get_current_user(token:Annotated[str, Depends(oauth2_scheme)], session=Depends(get_db)):
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                                           detail="Could not validate credentials", 
                                           headers={"WWW-Authenticate": "Bearer"})
@@ -59,6 +59,21 @@ def authenticate_user(session: Session, email:str, password:str):
         return False
     return user
 
+
+
+def create_reset_password_token(email:str):
+    data = {"sub": email, "exp": datetime.now(timezone.utc) + timedelta(minutes=15)}
+    token = jwt.encode(data, config.SECRET_KEY, algorithm=config.ALGORITHM)
+    return token
+
+
+def decode_reset_password_token(token: str):
+    try:
+        payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
+        email: str = payload.get("sub")
+        return email
+    except JWTError:
+        return None 
 
 
 

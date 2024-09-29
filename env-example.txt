@@ -16,8 +16,8 @@ MAIL_SERVER = "smtp.gmail.com"
 MAIL_FROM_NAME = "Learnify" # Your desired "From" name
 MAIL_FROM =            # Your Gmail address again, used as the sender address
 MAIL_PORT=587          # SMTP port for TLS
-MAIL_TLS=True          # Use TLS for secure connection
-MAIL_SSL=False         # Gmail uses TLS, so SSL should be False
+MAIL_STARTTLS=False
+MAIL_SSL_TLS = True         
 
 FRONTEND_BASE_URL="http://localhost:3000"
 GOOGLE_CLIENT_ID=

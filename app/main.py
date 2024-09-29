@@ -29,7 +29,7 @@ email_templates = Jinja2Templates(directory='app/templates')
 
 
 origins = [
-    "http://localhost:3000",
+    "http://localhost:3000"
 ]
 
 app.add_middleware(
