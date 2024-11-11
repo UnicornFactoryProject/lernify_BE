@@ -1,7 +1,3 @@
-Here's a polished version of your README for the Learnify backend API project. It includes proper formatting and clear instructions for setting up, running, and contributing to the project:
-
----
-
 # Learnify Backend API
 
 Learnify is a backend API for a learning platform, built using **FastAPI**, with **PostgreSQL** as the database and **SQLAlchemy** as the ORM. This README provides comprehensive instructions on setting up, running, and contributing to the project.
